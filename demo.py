@@ -146,7 +146,7 @@ if __name__ == "__main__":
     for image_id, image_name in enumerate(image_names):
         print('Running ', image_name)
         image      = cv2.imread(image_name)
-        print('0')
+
         height, width = image.shape[0:2]
 
         detections = []
@@ -168,46 +168,37 @@ if __name__ == "__main__":
             height_ratio = out_height / inp_height
             width_ratio  = out_width  / inp_width
 
-            print('0.1 ', scale)
             resized_image = cv2.resize(image, (new_width, new_height))
             resized_image, border, offset = crop_image(
                 resized_image, new_center, [inp_height, inp_width])
-            print('0.2 ', scale)
+
             resized_image = resized_image / 255.
             normalize_(resized_image, mean, std)
-            print('0.3 ', scale)
+
             images[0]  = resized_image.transpose((2, 0, 1))
             borders[0] = border
             sizes[0]   = [int(height * scale), int(width * scale)]
             ratios[0]  = [height_ratio, width_ratio]
-            print('0.4 ', scale)
+
             images = np.concatenate((images, images[:, :, :, ::-1]), axis=0)
-            print('0.5 ', scale)
             images = torch.from_numpy(images)
-            print('0.6 ', scale)
             dets   = kp_decode(
                 nnet, images, K, aggr_weight=aggr_weight, 
                 scores_thresh=scores_thresh, center_thresh=center_thresh,
                 kernel=nms_kernel, debug=False)
-            print('0.7 ', scale)
             dets   = dets.reshape(2, -1, 14)
-            print('0.8 ', scale)
             dets[1, :, [0, 2]] = out_width - dets[1, :, [2, 0]]
             dets[1, :, [5, 7, 9, 11]] = out_width - dets[1, :, [5, 7, 9, 11]]
             dets[1, :, [7, 8, 11, 12]] = dets[1, :, [11, 12, 7, 8]].copy()
             dets   = dets.reshape(1, -1, 14)
-            print('0.9 ', scale)
+
             _rescale_dets(dets, ratios, borders, sizes)
             _rescale_ex_pts(dets, ratios, borders, sizes)
             dets[:, :, 0:4] /= scale
             dets[:, :, 5:13] /= scale
             detections.append(dets)
 
-            print(scale)
-
         detections = np.concatenate(detections, axis=1)
-
-        print('1')
 
         classes    = detections[..., -1]
         classes    = classes[0]
@@ -225,7 +216,7 @@ if __name__ == "__main__":
                 detections[keep_inds].astype(np.float32)
             soft_nms(top_bboxes[image_id][j + 1], 
                      Nt=nms_threshold, method=nms_algorithm)
-        print('2')
+
         scores = np.hstack([
             top_bboxes[image_id][j][:, 4] 
             for j in range(1, categories + 1)
@@ -236,7 +227,7 @@ if __name__ == "__main__":
             for j in range(1, categories + 1):
                 keep_inds = (top_bboxes[image_id][j][:, 4] >= thresh)
                 top_bboxes[image_id][j] = top_bboxes[image_id][j][keep_inds]
-        print('3')
+
         if suppres_ghost:
             for j in range(1, categories + 1):
                 n = len(top_bboxes[image_id][j])
@@ -250,8 +241,8 @@ if __name__ == "__main__":
                         if inside_score > top_bboxes[image_id][j][k, 4] * 3:
                             top_bboxes[image_id][j][k, 4] /= 2
 
-        print('4')
-        if 0: # visualize
+
+        if 1: # visualize
             color_list    = colormap(rgb=True)
             mask_color_id = 0
             image         = cv2.imread(image_name)
