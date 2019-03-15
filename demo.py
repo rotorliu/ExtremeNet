@@ -280,8 +280,8 @@ if __name__ == "__main__":
                         mask_image = vis_mask(mask_image, mask, color_mask)
 
             if args.show_mask:
-                cv2.imshow('mask', mask_image)
-            cv2.imshow('out', image)
+                cv2.imwrite('/workspace/data/mask/' + image_id + '.jpg', mask_image)
+            cv2.imshow('/workspace/data/out/' + image_id + '.jpg', image)
             cv2.waitKey()
 
 
