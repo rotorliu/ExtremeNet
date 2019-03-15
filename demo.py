@@ -146,7 +146,7 @@ if __name__ == "__main__":
     for image_id, image_name in enumerate(image_names):
         print('Running ', image_name)
         image      = cv2.imread(image_name)
-
+        print('0')
         height, width = image.shape[0:2]
 
         detections = []
