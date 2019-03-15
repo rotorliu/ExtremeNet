@@ -242,7 +242,7 @@ if __name__ == "__main__":
                             top_bboxes[image_id][j][k, 4] /= 2
 
 
-        if 1: # visualize
+        if 0: # visualize
             color_list    = colormap(rgb=True)
             mask_color_id = 0
             image         = cv2.imread(image_name)
