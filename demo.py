@@ -168,6 +168,7 @@ if __name__ == "__main__":
             height_ratio = out_height / inp_height
             width_ratio  = out_width  / inp_width
 
+            print('0. ', scale)
             resized_image = cv2.resize(image, (new_width, new_height))
             resized_image, border, offset = crop_image(
                 resized_image, new_center, [inp_height, inp_width])
