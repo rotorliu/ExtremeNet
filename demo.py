@@ -168,19 +168,19 @@ if __name__ == "__main__":
             height_ratio = out_height / inp_height
             width_ratio  = out_width  / inp_width
 
-            print('0. ', scale)
+            print('0.1 ', scale)
             resized_image = cv2.resize(image, (new_width, new_height))
             resized_image, border, offset = crop_image(
                 resized_image, new_center, [inp_height, inp_width])
-
+            print('0.2 ', scale)
             resized_image = resized_image / 255.
             normalize_(resized_image, mean, std)
-
+            print('0.3 ', scale)
             images[0]  = resized_image.transpose((2, 0, 1))
             borders[0] = border
             sizes[0]   = [int(height * scale), int(width * scale)]
             ratios[0]  = [height_ratio, width_ratio]
-
+            print('0.4 ', scale)
             images = np.concatenate((images, images[:, :, :, ::-1]), axis=0)
             images = torch.from_numpy(images)
             dets   = kp_decode(
@@ -192,7 +192,7 @@ if __name__ == "__main__":
             dets[1, :, [5, 7, 9, 11]] = out_width - dets[1, :, [5, 7, 9, 11]]
             dets[1, :, [7, 8, 11, 12]] = dets[1, :, [11, 12, 7, 8]].copy()
             dets   = dets.reshape(1, -1, 14)
-
+            print('0.5 ', scale)
             _rescale_dets(dets, ratios, borders, sizes)
             _rescale_ex_pts(dets, ratios, borders, sizes)
             dets[:, :, 0:4] /= scale
