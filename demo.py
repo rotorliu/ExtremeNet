@@ -200,6 +200,8 @@ if __name__ == "__main__":
 
         detections = np.concatenate(detections, axis=1)
 
+        print('1')
+
         classes    = detections[..., -1]
         classes    = classes[0]
         detections = detections[0]
@@ -216,7 +218,7 @@ if __name__ == "__main__":
                 detections[keep_inds].astype(np.float32)
             soft_nms(top_bboxes[image_id][j + 1], 
                      Nt=nms_threshold, method=nms_algorithm)
-
+        print('2')
         scores = np.hstack([
             top_bboxes[image_id][j][:, 4] 
             for j in range(1, categories + 1)
@@ -227,7 +229,7 @@ if __name__ == "__main__":
             for j in range(1, categories + 1):
                 keep_inds = (top_bboxes[image_id][j][:, 4] >= thresh)
                 top_bboxes[image_id][j] = top_bboxes[image_id][j][keep_inds]
-
+        print('3')
         if suppres_ghost:
             for j in range(1, categories + 1):
                 n = len(top_bboxes[image_id][j])
@@ -241,7 +243,7 @@ if __name__ == "__main__":
                         if inside_score > top_bboxes[image_id][j][k, 4] * 3:
                             top_bboxes[image_id][j][k, 4] /= 2
 
-
+        print('4')
         if 0: # visualize
             color_list    = colormap(rgb=True)
             mask_color_id = 0
