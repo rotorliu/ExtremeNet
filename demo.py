@@ -198,6 +198,8 @@ if __name__ == "__main__":
             dets[:, :, 5:13] /= scale
             detections.append(dets)
 
+            print(scale)
+
         detections = np.concatenate(detections, axis=1)
 
         print('1')
