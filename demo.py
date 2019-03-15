@@ -188,7 +188,7 @@ if __name__ == "__main__":
             dets   = kp_decode(
                 nnet, images, K, aggr_weight=aggr_weight, 
                 scores_thresh=scores_thresh, center_thresh=center_thresh,
-                kernel=nms_kernel, debug=True)
+                kernel=nms_kernel, debug=False)
             print('0.7 ', scale)
             dets   = dets.reshape(2, -1, 14)
             print('0.8 ', scale)
