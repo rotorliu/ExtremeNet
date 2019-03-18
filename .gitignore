@@ -10,3 +10,4 @@ results/
 
 *.pyc
 *.o*
+.vscode/settings.json
